@@ -4,13 +4,8 @@
 
 [![hacs_badge](https://img.shields.io/badge/Home-Assistant-%23049cdb)](https://www.home-assistant.io/)
 [![hacs_badge](https://img.shields.io/badge/HACS-Custom-41BDF5.svg)](https://github.com/hacs/integration)
-![visit](https://visitor-badge.laobi.icu/badge?page_id=shaonianzhentan.ha_cloud_music&left_text=visit)
 
----
-## 历史旧版本项目，请点击链接访问安装
-https://github.com/shaonianzhentan/cloud_music
 
----
 
 ## 安装
 
@@ -24,7 +19,6 @@ https://github.com/shaonianzhentan/cloud_music
 
 https://github.com/Binaryify/NeteaseCloudMusicApi
 
-不想动手不想操心，也可以付费使用由我部署维护的接口服务（每年30）
 
 **注意：关联媒体播放器调整为在集成选项中选择**
 
@@ -50,16 +44,3 @@ https://github.com/Binaryify/NeteaseCloudMusicApi
 > **登录后播放**
 - [x] 每日推荐 `cloudmusic://163/my/daily`
 - [x] 我喜欢的音乐 `cloudmusic://163/my/ilike`
-
-## 关联项目
-
-- https://github.com/shaonianzhentan/cloud_music_mpd
-- https://github.com/shaonianzhentan/ha_windows
-
-## 如果这个项目对你有帮助，请我喝杯<del style="font-size: 14px;">咖啡</del>奶茶吧😘
-|支付宝|微信|
-|---|---|
-<img src="https://ha.jiluxinqing.com/img/alipay.png" align="left" height="160" width="160" alt="支付宝" title="支付宝">  |  <img src="https://ha.jiluxinqing.com/img/wechat.png" align="left" height="160" width="160" alt="微信支付" title="微信">
-
-#### 关注我的微信订阅号，了解更多HomeAssistant相关知识
-<img src="https://ha.jiluxinqing.com/img/wechat-channel.png" height="160" alt="HomeAssistant家庭助理" title="HomeAssistant家庭助理">
