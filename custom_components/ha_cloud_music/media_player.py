@@ -121,6 +121,7 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
             self.async_schedule_update_ha_state(True)
 
             if (self._playing
+                and self._attr_repeat != RepeatMode.OFF
                 and (old_state:=event.data['old_state']) is not None
                 and old_state.state == MediaPlayerState.PLAYING
                 and (new_state:=event.data['new_state']) is not None
