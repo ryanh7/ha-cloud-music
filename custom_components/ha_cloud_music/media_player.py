@@ -1,7 +1,9 @@
 import logging
 from typing import Any
+from datetime import timedelta
 
 from homeassistant.core import HomeAssistant, callback
+from homeassistant.util import dt as dt_util
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
 from homeassistant.helpers.typing import EventType
@@ -104,6 +106,8 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
         self.cloud_music = hass.data['cloud_music']
         self._child_state = None
         self._music_info = None
+        self._playing = False
+        self._track_last_at = dt_util.now()
     
     async def async_added_to_hass(self) -> None:
         """Subscribe to children and template state changes."""
@@ -115,6 +119,14 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
             """Update ha state when dependencies update."""
             self.async_set_context(event.context)
             self.async_schedule_update_ha_state(True)
+
+            if (self._playing
+                and (old_state:=event.data['old_state']) is not None
+                and old_state.state == MediaPlayerState.PLAYING
+                and (new_state:=event.data['new_state']) is not None
+                and new_state.state == MediaPlayerState.IDLE
+                and (dt_util.now() - self._track_last_at > timedelta(seconds=5))):
+                self.hass.async_create_task(self.async_media_next_track())
 
         self.async_on_remove(
             async_track_state_change_event(
@@ -292,6 +304,7 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
 
     async def async_turn_off(self) -> None:
         """Turn the media player off."""
+        self._playing = False
         await self._async_call_service(SERVICE_TURN_OFF)
 
     async def async_mute_volume(self, mute: bool) -> None:
@@ -306,22 +319,27 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
 
     async def async_media_play(self) -> None:
         """Send play command."""
+        self._playing = True
         await self._async_call_service(SERVICE_MEDIA_PLAY)
 
     async def async_media_pause(self) -> None:
         """Send pause command."""
+        self._playing = False
         await self._async_call_service(SERVICE_MEDIA_PAUSE)
 
     async def async_media_stop(self) -> None:
         """Send stop command."""
+        self._playing = False
         await self._async_call_service(SERVICE_MEDIA_STOP)
 
     async def async_media_previous_track(self) -> None:
         """Send previous track command."""
+        self._track_last_at = dt_util.utcnow()
         await self.cloud_music.async_media_previous_track(self, self._attr_shuffle)
 
     async def async_media_next_track(self) -> None:
         """Send next track command."""
+        self._track_last_at = dt_util.utcnow()
         await self.cloud_music.async_media_next_track(self, self._attr_shuffle)
 
     async def async_media_seek(self, position: float) -> None:
