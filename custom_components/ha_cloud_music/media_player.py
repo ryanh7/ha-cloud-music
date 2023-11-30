@@ -321,6 +321,7 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
     async def async_media_play(self) -> None:
         """Send play command."""
         self._playing = True
+        self._track_last_at = dt_util.now()
         await self._async_call_service(SERVICE_MEDIA_PLAY)
 
     async def async_media_pause(self) -> None:
