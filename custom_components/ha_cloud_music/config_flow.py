@@ -76,8 +76,10 @@ class OptionsFlowHandler(OptionsFlow):
             if platform != 'cloud_music' and state.state != 'unavailable':
                 media_entities.append({ 'label': value, 'value': entity_id })
 
+        selected = [ p['value'] for p in media_entities  if p['value'] in options.get('media_player') ]
+
         DATA_SCHEMA = vol.Schema({
-            vol.Required('media_player', default=options.get('media_player')): selector({
+            vol.Required('media_player', default=selected): selector({
                 "select": {
                     "options": media_entities,
                     "multiple": True
