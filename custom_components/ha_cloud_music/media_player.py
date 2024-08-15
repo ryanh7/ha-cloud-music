@@ -2,15 +2,11 @@ import logging
 from typing import Any
 from datetime import timedelta
 
-from homeassistant.core import HomeAssistant, callback
+from homeassistant.core import HomeAssistant, callback, Event, EventStateChangedData
 from homeassistant.util import dt as dt_util
 from homeassistant.helpers.entity_platform import AddEntitiesCallback
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.helpers.typing import EventType
-from homeassistant.helpers.event import (
-    EventStateChangedData,
-    async_track_state_change_event,
-)
+from homeassistant.helpers.event import async_track_state_change_event
 from homeassistant.components.media_player import (
     ATTR_APP_ID,
     ATTR_INPUT_SOURCE,
@@ -114,7 +110,7 @@ class CloudMusicMediaPlayer(MediaPlayerEntity):
 
         @callback
         def _async_on_dependency_update(
-            event: EventType[EventStateChangedData],
+            event: Event[EventStateChangedData],
         ) -> None:
             """Update ha state when dependencies update."""
             self.async_set_context(event.context)
